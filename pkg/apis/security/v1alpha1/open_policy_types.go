@@ -20,6 +20,7 @@ import (
 	policyduck "github.com/yolocs/knative-policy-binding/pkg/apis/duck/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	duckv1 "knative.dev/pkg/apis/duck/v1"
 )
 
 // +genclient
@@ -50,6 +51,10 @@ type OpenPolicySpec struct {
 
 // OpenPolicyStatus is open policy status.
 type OpenPolicyStatus struct {
+	// inherits duck/v1 Status, which currently provides:
+	// * ObservedGeneration - the 'Generation' of the Service that was last processed by the controller.
+	// * Conditions - the latest available observations of a resource's current state.
+	duckv1.Status `json:",inline"`
 	// Duck status.
 	policyduck.PolicyableStatus `json:",inline"`
 }
