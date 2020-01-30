@@ -1045,6 +1045,7 @@
     "configmap",
     "controller",
     "injection",
+    "injection/clients/dynamicclient",
     "injection/sharedmain",
     "kmeta",
     "kmp",
@@ -1070,6 +1071,29 @@
   ]
   pruneopts = "T"
   revision = "2fbb9db15cbb7971ad2b1f4266a437f5dcc33a51"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0d98e3ee5d08780859f5d8a7304724523471771d760598960fb2768836cf60b1"
+  name = "knative.dev/sample-controller"
+  packages = [
+    "pkg/apis/samples",
+    "pkg/apis/samples/v1alpha1",
+    "pkg/client/clientset/versioned",
+    "pkg/client/clientset/versioned/scheme",
+    "pkg/client/clientset/versioned/typed/samples/v1alpha1",
+    "pkg/client/informers/externalversions",
+    "pkg/client/informers/externalversions/internalinterfaces",
+    "pkg/client/informers/externalversions/samples",
+    "pkg/client/informers/externalversions/samples/v1alpha1",
+    "pkg/client/injection/client",
+    "pkg/client/injection/informers/factory",
+    "pkg/client/injection/informers/samples/v1alpha1/addressableservice",
+    "pkg/client/listers/samples/v1alpha1",
+    "pkg/reconciler/addressableservice",
+  ]
+  pruneopts = "NUT"
+  revision = "4265189e2bad8e411664fb7b2233be9f23999db2"
 
 [[projects]]
   branch = "master"
@@ -1121,14 +1145,15 @@
     "k8s.io/code-generator/cmd/informer-gen",
     "k8s.io/code-generator/cmd/lister-gen",
     "knative.dev/pkg/apis",
+    "knative.dev/pkg/apis/duck",
     "knative.dev/pkg/apis/duck/v1",
     "knative.dev/pkg/client/injection/kube/informers/core/v1/service",
     "knative.dev/pkg/codegen/cmd/injection-gen",
     "knative.dev/pkg/configmap",
     "knative.dev/pkg/controller",
     "knative.dev/pkg/injection",
+    "knative.dev/pkg/injection/clients/dynamicclient",
     "knative.dev/pkg/injection/sharedmain",
-    "knative.dev/pkg/kmeta",
     "knative.dev/pkg/logging",
     "knative.dev/pkg/metrics",
     "knative.dev/pkg/network",
@@ -1142,6 +1167,12 @@
     "knative.dev/pkg/webhook/resourcesemantics",
     "knative.dev/pkg/webhook/resourcesemantics/defaulting",
     "knative.dev/pkg/webhook/resourcesemantics/validation",
+    "knative.dev/sample-controller/pkg/apis/samples/v1alpha1",
+    "knative.dev/sample-controller/pkg/client/clientset/versioned",
+    "knative.dev/sample-controller/pkg/client/injection/client",
+    "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice",
+    "knative.dev/sample-controller/pkg/client/listers/samples/v1alpha1",
+    "knative.dev/sample-controller/pkg/reconciler/addressableservice",
     "knative.dev/test-infra/scripts",
     "knative.dev/test-infra/tools/dep-collector",
   ]
