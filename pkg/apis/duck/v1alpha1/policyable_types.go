@@ -47,12 +47,12 @@ type PolicyableSpec struct {
 // PolicyableStatus contains the status of a Policyable object.
 type PolicyableStatus struct {
 	// DeciderURI is the decision service endpoint.
-	DeciderURI *apis.URL `json:"webhook,omitempty"`
+	DeciderURI *apis.URL `json:"deciderURI,omitempty"`
 
 	// AgentSpec is the podspec if an agent is required to inject to the
 	// user pod.
 	// +optional
-	AgentSpec PolicyableAgentSpec `json:"agentSpec,omitempty"`
+	AgentSpec *PolicyableAgentSpec `json:"agentSpec,omitempty"`
 }
 
 type PolicyableAgentSpec struct {
@@ -78,7 +78,7 @@ func (p *Policyable) Populate() {
 	}
 	p.Status = PolicyableStatus{
 		DeciderURI: apis.HTTP("localhost:8085"),
-		AgentSpec: PolicyableAgentSpec{
+		AgentSpec: &PolicyableAgentSpec{
 			Volumes: []corev1.Volume{
 				{
 					Name: "vol-mount",

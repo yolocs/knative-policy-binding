@@ -26,6 +26,8 @@ import (
 type Interface interface {
 	// OpenPolicies returns a OpenPolicyInformer.
 	OpenPolicies() OpenPolicyInformer
+	// PolicyBindings returns a PolicyBindingInformer.
+	PolicyBindings() PolicyBindingInformer
 }
 
 type version struct {
@@ -42,4 +44,9 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 // OpenPolicies returns a OpenPolicyInformer.
 func (v *version) OpenPolicies() OpenPolicyInformer {
 	return &openPolicyInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// PolicyBindings returns a PolicyBindingInformer.
+func (v *version) PolicyBindings() PolicyBindingInformer {
+	return &policyBindingInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

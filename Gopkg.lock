@@ -333,6 +333,14 @@
   revision = "f2b4162afba35581b6d4a50d3b8f34e33c144682"
 
 [[projects]]
+  digest = "1:08c58ac78a8c1f61e9a96350066d30fe194b8779799bd932a79932a5166a173f"
+  name = "github.com/kelseyhightower/envconfig"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "0b417c4ec4a8a82eecc22a1459a504aa55163d61"
+  version = "v1.4.0"
+
+[[projects]]
   digest = "1:56dbf15e091bf7926cb33a57cb6bdfc658fc6d3498d2f76f10a97ce7856f1fde"
   name = "github.com/markbates/inflect"
   packages = ["."]
@@ -1140,12 +1148,15 @@
     "apis",
     "apis/duck",
     "apis/duck/v1",
+    "apis/duck/v1alpha1",
+    "apis/duck/v1beta1",
     "changeset",
+    "client/injection/ducks/duck/v1/podspecable",
     "client/injection/kube/client",
     "client/injection/kube/informers/admissionregistration/v1beta1/mutatingwebhookconfiguration",
     "client/injection/kube/informers/admissionregistration/v1beta1/validatingwebhookconfiguration",
+    "client/injection/kube/informers/core/v1/configmap",
     "client/injection/kube/informers/core/v1/secret",
-    "client/injection/kube/informers/core/v1/service",
     "client/injection/kube/informers/factory",
     "codegen/cmd/injection-gen",
     "codegen/cmd/injection-gen/args",
@@ -1164,7 +1175,6 @@
     "network",
     "profiling",
     "ptr",
-    "reconciler",
     "signals",
     "system",
     "tracker",
@@ -1173,35 +1183,13 @@
     "webhook/certificates",
     "webhook/certificates/resources",
     "webhook/configmaps",
+    "webhook/psbinding",
     "webhook/resourcesemantics",
     "webhook/resourcesemantics/defaulting",
     "webhook/resourcesemantics/validation",
   ]
   pruneopts = "T"
   revision = "2fbb9db15cbb7971ad2b1f4266a437f5dcc33a51"
-
-[[projects]]
-  branch = "master"
-  digest = "1:0d98e3ee5d08780859f5d8a7304724523471771d760598960fb2768836cf60b1"
-  name = "knative.dev/sample-controller"
-  packages = [
-    "pkg/apis/samples",
-    "pkg/apis/samples/v1alpha1",
-    "pkg/client/clientset/versioned",
-    "pkg/client/clientset/versioned/scheme",
-    "pkg/client/clientset/versioned/typed/samples/v1alpha1",
-    "pkg/client/informers/externalversions",
-    "pkg/client/informers/externalversions/internalinterfaces",
-    "pkg/client/informers/externalversions/samples",
-    "pkg/client/informers/externalversions/samples/v1alpha1",
-    "pkg/client/injection/client",
-    "pkg/client/injection/informers/factory",
-    "pkg/client/injection/informers/samples/v1alpha1/addressableservice",
-    "pkg/client/listers/samples/v1alpha1",
-    "pkg/reconciler/addressableservice",
-  ]
-  pruneopts = "NUT"
-  revision = "4265189e2bad8e411664fb7b2233be9f23999db2"
 
 [[projects]]
   branch = "master"
@@ -1227,12 +1215,15 @@
   analyzer-version = 1
   input-imports = [
     "github.com/cloudflare/cfssl/log",
+    "github.com/kelseyhightower/envconfig",
     "github.com/open-policy-agent/opa/ast",
     "github.com/open-policy-agent/opa/rego",
+    "github.com/pkg/errors",
     "go.uber.org/zap",
     "k8s.io/api/core/v1",
     "k8s.io/apimachinery/pkg/api/equality",
     "k8s.io/apimachinery/pkg/api/errors",
+    "k8s.io/apimachinery/pkg/api/meta",
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/apimachinery/pkg/labels",
     "k8s.io/apimachinery/pkg/runtime",
@@ -1243,7 +1234,9 @@
     "k8s.io/apimachinery/pkg/watch",
     "k8s.io/client-go/discovery",
     "k8s.io/client-go/discovery/fake",
+    "k8s.io/client-go/kubernetes",
     "k8s.io/client-go/kubernetes/scheme",
+    "k8s.io/client-go/kubernetes/typed/core/v1",
     "k8s.io/client-go/listers/core/v1",
     "k8s.io/client-go/rest",
     "k8s.io/client-go/testing",
@@ -1258,32 +1251,30 @@
     "knative.dev/pkg/apis",
     "knative.dev/pkg/apis/duck",
     "knative.dev/pkg/apis/duck/v1",
-    "knative.dev/pkg/client/injection/kube/informers/core/v1/service",
+    "knative.dev/pkg/apis/duck/v1alpha1",
+    "knative.dev/pkg/client/injection/ducks/duck/v1/podspecable",
+    "knative.dev/pkg/client/injection/kube/client",
+    "knative.dev/pkg/client/injection/kube/informers/core/v1/configmap",
     "knative.dev/pkg/codegen/cmd/injection-gen",
     "knative.dev/pkg/configmap",
     "knative.dev/pkg/controller",
     "knative.dev/pkg/injection",
     "knative.dev/pkg/injection/clients/dynamicclient",
     "knative.dev/pkg/injection/sharedmain",
+    "knative.dev/pkg/kmeta",
     "knative.dev/pkg/logging",
+    "knative.dev/pkg/logging/logkey",
     "knative.dev/pkg/metrics",
     "knative.dev/pkg/network",
-    "knative.dev/pkg/reconciler",
     "knative.dev/pkg/signals",
-    "knative.dev/pkg/system",
     "knative.dev/pkg/tracker",
     "knative.dev/pkg/webhook",
     "knative.dev/pkg/webhook/certificates",
     "knative.dev/pkg/webhook/configmaps",
+    "knative.dev/pkg/webhook/psbinding",
     "knative.dev/pkg/webhook/resourcesemantics",
     "knative.dev/pkg/webhook/resourcesemantics/defaulting",
     "knative.dev/pkg/webhook/resourcesemantics/validation",
-    "knative.dev/sample-controller/pkg/apis/samples/v1alpha1",
-    "knative.dev/sample-controller/pkg/client/clientset/versioned",
-    "knative.dev/sample-controller/pkg/client/injection/client",
-    "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice",
-    "knative.dev/sample-controller/pkg/client/listers/samples/v1alpha1",
-    "knative.dev/sample-controller/pkg/reconciler/addressableservice",
     "knative.dev/test-infra/scripts",
     "knative.dev/test-infra/tools/dep-collector",
   ]

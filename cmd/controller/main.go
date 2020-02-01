@@ -18,7 +18,8 @@ package main
 
 import (
 	// The set of controllers this controller process runs.
-	"knative.dev/sample-controller/pkg/reconciler/addressableservice"
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/openpolicy"
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
 
 	// This defines the shared main for injected controllers.
 	"knative.dev/pkg/injection/sharedmain"
@@ -26,6 +27,7 @@ import (
 
 func main() {
 	sharedmain.Main("controller",
-		addressableservice.NewController,
+		openpolicy.NewController,
+		policybinding.NewController,
 	)
 }

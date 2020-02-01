@@ -14,7 +14,7 @@ var str string = `package security.knative.dev
 default allow = false
 
 allow = {
-	startswith(input.value, "abc")"""
+	startswith(input.request.header["Version"][_], "Test-")
 }
 `
 

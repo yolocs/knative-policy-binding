@@ -27,6 +27,7 @@ import (
 type SecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	OpenPoliciesGetter
+	PolicyBindingsGetter
 }
 
 // SecurityV1alpha1Client is used to interact with features provided by the security.knative.dev group.
@@ -36,6 +37,10 @@ type SecurityV1alpha1Client struct {
 
 func (c *SecurityV1alpha1Client) OpenPolicies(namespace string) OpenPolicyInterface {
 	return newOpenPolicies(c, namespace)
+}
+
+func (c *SecurityV1alpha1Client) PolicyBindings(namespace string) PolicyBindingInterface {
+	return newPolicyBindings(c, namespace)
 }
 
 // NewForConfig creates a new SecurityV1alpha1Client for the given config.

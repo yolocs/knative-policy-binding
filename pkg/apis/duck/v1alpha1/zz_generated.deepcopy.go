@@ -135,7 +135,11 @@ func (in *PolicyableStatus) DeepCopyInto(out *PolicyableStatus) {
 		*out = new(apis.URL)
 		(*in).DeepCopyInto(*out)
 	}
-	in.AgentSpec.DeepCopyInto(&out.AgentSpec)
+	if in.AgentSpec != nil {
+		in, out := &in.AgentSpec, &out.AgentSpec
+		*out = new(PolicyableAgentSpec)
+		(*in).DeepCopyInto(*out)
+	}
 	return
 }
 

@@ -1,0 +1,12 @@
+apiVersion: security.knative.dev/v1alpha1
+kind: OpenPolicy
+metadata:
+  name: invalid-http-policy
+  namespace: policy-example
+spec:
+  rule: |
+    allow = {
+      some i xxx;;^^^^
+      h := input.request.header["Version"][i];;;;;;
+      startswith(h, "Test-")
+    }

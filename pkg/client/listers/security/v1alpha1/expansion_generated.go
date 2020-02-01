@@ -25,3 +25,11 @@ type OpenPolicyListerExpansion interface{}
 // OpenPolicyNamespaceListerExpansion allows custom methods to be added to
 // OpenPolicyNamespaceLister.
 type OpenPolicyNamespaceListerExpansion interface{}
+
+// PolicyBindingListerExpansion allows custom methods to be added to
+// PolicyBindingLister.
+type PolicyBindingListerExpansion interface{}
+
+// PolicyBindingNamespaceListerExpansion allows custom methods to be added to
+// PolicyBindingNamespaceLister.
+type PolicyBindingNamespaceListerExpansion interface{}

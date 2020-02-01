@@ -32,6 +32,10 @@ func (c *FakeSecurityV1alpha1) OpenPolicies(namespace string) v1alpha1.OpenPolic
 	return &FakeOpenPolicies{c, namespace}
 }
 
+func (c *FakeSecurityV1alpha1) PolicyBindings(namespace string) v1alpha1.PolicyBindingInterface {
+	return &FakePolicyBindings{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSecurityV1alpha1) RESTClient() rest.Interface {
