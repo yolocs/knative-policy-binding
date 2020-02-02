@@ -31,11 +31,11 @@ import (
 	"knative.dev/pkg/injection/clients/dynamicclient"
 	"knative.dev/pkg/logging"
 	"knative.dev/pkg/tracker"
-	"knative.dev/pkg/webhook/psbinding"
 
 	"github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha1"
 	"github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned/scheme"
 	policybindinginformer "github.com/yolocs/knative-policy-binding/pkg/client/injection/informers/security/v1alpha1/policybinding"
+	"github.com/yolocs/knative-policy-binding/pkg/webhook/psbinding"
 )
 
 const (
@@ -107,17 +107,11 @@ func WithContextFactory(ctx context.Context, handler func(types.NamespacedName))
 	r := NewPolicyResolver(ctx, handler)
 	return func(c context.Context, b psbinding.Bindable) (context.Context, error) {
 		pb := b.(*v1alpha1.PolicyBinding)
-		policyRef := &corev1.ObjectReference{
-			APIVersion: pb.Spec.Policy.APIVersion,
-			Kind:       pb.Spec.Policy.Kind,
-			Namespace:  pb.Spec.Policy.Namespace,
-			Name:       pb.Spec.Policy.Name,
-		}
-		status, err := r.StatusFromPolicyRef(policyRef, pb)
+		policy, err := r.PolicyFromRef(pb.Spec.Policy, pb)
 		if err != nil {
 			return nil, err
 		}
 
-		return v1alpha1.WithPolicyStatus(ctx, status), nil
+		return v1alpha1.WithPolicy(ctx, policy), nil
 	}
 }

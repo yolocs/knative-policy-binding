@@ -22,18 +22,18 @@ import (
 	policyduck "github.com/yolocs/knative-policy-binding/pkg/apis/duck/v1alpha1"
 )
 
-type policyStatusKey struct{}
+type policyKey struct{}
 
-// WithPolicyStatus notes the context for the policy duck status.
-func WithPolicyStatus(ctx context.Context, status *policyduck.PolicyableStatus) context.Context {
-	return context.WithValue(ctx, policyStatusKey{}, status)
+// WithPolicy notes the context for the policy duck type.
+func WithPolicy(ctx context.Context, policy *policyduck.Policyable) context.Context {
+	return context.WithValue(ctx, policyKey{}, policy)
 }
 
-// GetPolicyStatus accesses the policy status in the context.
-func GetPolicyStatus(ctx context.Context) *policyduck.PolicyableStatus {
-	value := ctx.Value(policyStatusKey{})
+// GetPolicy accesses the policy in the context.
+func GetPolicy(ctx context.Context) *policyduck.Policyable {
+	value := ctx.Value(policyKey{})
 	if value == nil {
 		return nil
 	}
-	return value.(*policyduck.PolicyableStatus)
+	return value.(*policyduck.Policyable)
 }

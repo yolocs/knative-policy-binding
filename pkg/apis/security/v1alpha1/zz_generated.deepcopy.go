@@ -21,6 +21,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -185,7 +186,11 @@ func (in *PolicyBindingList) DeepCopyObject() runtime.Object {
 func (in *PolicyBindingSpec) DeepCopyInto(out *PolicyBindingSpec) {
 	*out = *in
 	in.BindingSpec.DeepCopyInto(&out.BindingSpec)
-	in.Policy.DeepCopyInto(&out.Policy)
+	if in.Policy != nil {
+		in, out := &in.Policy, &out.Policy
+		*out = new(v1.ObjectReference)
+		**out = **in
+	}
 	return
 }
 

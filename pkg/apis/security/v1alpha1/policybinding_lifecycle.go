@@ -17,15 +17,9 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"context"
-	"fmt"
-
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"knative.dev/pkg/apis"
 	"knative.dev/pkg/apis/duck"
-	duckv1 "knative.dev/pkg/apis/duck/v1"
-	"knative.dev/pkg/logging"
 	"knative.dev/pkg/tracker"
 )
 
@@ -77,72 +71,4 @@ func (pbs *PolicyBindingStatus) MarkBindingUnavailable(reason, message string) {
 // MarkBindingAvailable marks the SinkBinding's Ready condition to True.
 func (pbs *PolicyBindingStatus) MarkBindingAvailable() {
 	policyBindingCondSet.Manage(pbs).MarkTrue(PolicyBindingConditionReady)
-}
-
-// Do implements psbinding.Bindable
-func (pb *PolicyBinding) Do(ctx context.Context, ps *duckv1.WithPod) {
-	// First undo.
-	pb.Undo(ctx, ps)
-
-	pstatus := GetPolicyStatus(ctx)
-	if pstatus == nil {
-		logging.FromContext(ctx).Error(fmt.Sprintf("No policy status associated with context for %+v", pb))
-		return
-	}
-
-	spec := ps.Spec.Template.Spec
-	for i := range spec.Containers {
-		spec.Containers[i].Env = append(spec.Containers[i].Env, corev1.EnvVar{
-			Name:  "K_POLICY_DECIDER",
-			Value: pstatus.DeciderURI.String(),
-		})
-	}
-
-	if pstatus.AgentSpec != nil {
-		spec.Volumes = append(spec.Volumes, pstatus.AgentSpec.Volumes...)
-		spec.Containers = append(spec.Containers, pstatus.AgentSpec.Container)
-	}
-
-	ps.Spec.Template.Spec = spec
-}
-
-// Undo implements psbinding.Bindable
-func (pb *PolicyBinding) Undo(ctx context.Context, ps *duckv1.WithPod) {
-	pstatus := GetPolicyStatus(ctx)
-	if pstatus == nil {
-		logging.FromContext(ctx).Error(fmt.Sprintf("No policy status associated with context for %+v", pb))
-		return
-	}
-
-	spec := ps.Spec.Template.Spec
-	for i, c := range spec.Containers {
-		for j, ev := range c.Env {
-			if ev.Name == "K_POLICY_DECIDER" {
-				spec.Containers[i].Env = append(spec.Containers[i].Env[:j], spec.Containers[i].Env[j+1:]...)
-				break
-			}
-		}
-	}
-
-	if pstatus.AgentSpec == nil {
-		return
-	}
-
-	// Remove volumes.
-	for _, v := range pstatus.AgentSpec.Volumes {
-		for j, ev := range spec.Volumes {
-			if ev.Name == v.Name {
-				spec.Volumes = append(spec.Volumes[:j], spec.Volumes[j+1:]...)
-			}
-		}
-	}
-
-	// Remove agent sidecar.
-	for i, c := range spec.Containers {
-		if c.Name == pstatus.AgentSpec.Container.Name {
-			spec.Containers = append(spec.Containers[:i], spec.Containers[i+1:]...)
-		}
-	}
-
-	ps.Spec.Template.Spec = spec
 }

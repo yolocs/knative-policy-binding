@@ -17,13 +17,13 @@ limitations under the License.
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"knative.dev/pkg/apis"
 	duckv1 "knative.dev/pkg/apis/duck/v1"
 	duckv1alpha1 "knative.dev/pkg/apis/duck/v1alpha1"
 	"knative.dev/pkg/kmeta"
-	"knative.dev/pkg/tracker"
 )
 
 // +genclient
@@ -52,7 +52,7 @@ type PolicyBindingSpec struct {
 	duckv1alpha1.BindingSpec `json:",inline"`
 
 	// The policy to bind to the subjects.
-	Policy tracker.Reference `json:"policy"`
+	Policy *corev1.ObjectReference `json:"policy"`
 }
 
 // PolicyBindingStatus is the status of the binding.

@@ -53,8 +53,8 @@ func NewPolicyResolver(ctx context.Context, callback func(types.NamespacedName))
 	return ret
 }
 
-// StatusFromPolicyRef resolves policy status.
-func (r *PolicyResolver) StatusFromPolicyRef(ref *corev1.ObjectReference, parent interface{}) (*policyduck.PolicyableStatus, error) {
+// PolicyFromRef resolves policy.
+func (r *PolicyResolver) PolicyFromRef(ref *corev1.ObjectReference, parent interface{}) (*policyduck.Policyable, error) {
 	if ref == nil {
 		return nil, errors.New("ref is nil")
 	}
@@ -79,6 +79,5 @@ func (r *PolicyResolver) StatusFromPolicyRef(ref *corev1.ObjectReference, parent
 		return nil, fmt.Errorf("%+v (%T) is not a Policyable", ref, ref)
 	}
 
-	status := policy.Status.DeepCopy()
-	return status, nil
+	return policy.DeepCopy(), nil
 }

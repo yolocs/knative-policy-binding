@@ -36,6 +36,5 @@ func (pb *PolicyBinding) Validate(ctx context.Context) *apis.FieldError {
 
 // Validate implements apis.Validatable
 func (pbs *PolicyBindingSpec) Validate(ctx context.Context) *apis.FieldError {
-	return pbs.Subject.Validate(ctx).ViaField("subject").Also(
-		pbs.Policy.Validate(ctx).ViaField("policy"))
+	return pbs.Subject.Validate(ctx).ViaField("subject")
 }

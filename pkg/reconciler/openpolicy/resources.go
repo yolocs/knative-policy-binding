@@ -31,7 +31,7 @@ func MakeDeciderURL() *apis.URL {
 	return apis.HTTP("localhost:8090")
 }
 
-func MakeAgentSpec(agentImage, cmName string) *policyduck.PolicyableAgentSpec {
+func MakeAgentSpec(agentImage, cmName, toRemove string) *policyduck.PolicyableAgentSpec {
 	cfg, _ := logging.NewConfigFromMap(nil)
 	return &policyduck.PolicyableAgentSpec{
 		Volumes: []corev1.Volume{
@@ -65,6 +65,10 @@ func MakeAgentSpec(agentImage, cmName string) *policyduck.PolicyableAgentSpec {
 				{
 					Name:  "AGENT_LOGGING_LEVEL",
 					Value: "debug",
+				},
+				{
+					Name:  "AGENT_TEST",
+					Value: toRemove,
 				},
 			},
 			Ports: []corev1.ContainerPort{

@@ -30,13 +30,13 @@ import (
 	"knative.dev/pkg/webhook"
 	"knative.dev/pkg/webhook/certificates"
 	"knative.dev/pkg/webhook/configmaps"
-	"knative.dev/pkg/webhook/psbinding"
 	"knative.dev/pkg/webhook/resourcesemantics"
 	"knative.dev/pkg/webhook/resourcesemantics/defaulting"
 	"knative.dev/pkg/webhook/resourcesemantics/validation"
 
 	securityv1alpha1 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha1"
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
+	"github.com/yolocs/knative-policy-binding/pkg/webhook/psbinding"
 )
 
 var securityTypes = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
