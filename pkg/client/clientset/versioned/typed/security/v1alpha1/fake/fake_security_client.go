@@ -28,6 +28,10 @@ type FakeSecurityV1alpha1 struct {
 	*testing.Fake
 }
 
+func (c *FakeSecurityV1alpha1) EventPolicies(namespace string) v1alpha1.EventPolicyInterface {
+	return &FakeEventPolicies{c, namespace}
+}
+
 func (c *FakeSecurityV1alpha1) OpenPolicies(namespace string) v1alpha1.OpenPolicyInterface {
 	return &FakeOpenPolicies{c, namespace}
 }

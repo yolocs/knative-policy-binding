@@ -120,6 +120,25 @@
   version = "v0.2.1"
 
 [[projects]]
+  digest = "1:c68940df72bdfde8eab1edc9b8467a8d1a94a22e9282ad4011c7f9060e11d3b3"
+  name = "github.com/cloudevents/sdk-go"
+  packages = [
+    "pkg/cloudevents",
+    "pkg/cloudevents/context",
+    "pkg/cloudevents/datacodec",
+    "pkg/cloudevents/datacodec/json",
+    "pkg/cloudevents/datacodec/text",
+    "pkg/cloudevents/datacodec/xml",
+    "pkg/cloudevents/observability",
+    "pkg/cloudevents/transport",
+    "pkg/cloudevents/transport/http",
+    "pkg/cloudevents/types",
+  ]
+  pruneopts = "NUT"
+  revision = "3673e23532dccb38196f600eec7e8b7090ecfb12"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:a311d238523ce1a4df108421ba20724c643500d32f6c594df95a59e1e7ad42f6"
   name = "github.com/cloudflare/cfssl"
   packages = ["log"]
@@ -1213,6 +1232,8 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/cloudevents/sdk-go/pkg/cloudevents",
+    "github.com/cloudevents/sdk-go/pkg/cloudevents/transport/http",
     "github.com/cloudflare/cfssl/log",
     "github.com/kelseyhightower/envconfig",
     "github.com/markbates/inflect",

@@ -18,6 +18,7 @@ package main
 
 import (
 	// The set of controllers this controller process runs.
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/eventpolicy"
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler/openpolicy"
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
 
@@ -28,6 +29,7 @@ import (
 func main() {
 	sharedmain.Main("controller",
 		openpolicy.NewController,
+		eventpolicy.NewController,
 		policybinding.NewController,
 	)
 }

@@ -24,6 +24,8 @@ import (
 
 // Interface provides access to all the informers in this group version.
 type Interface interface {
+	// EventPolicies returns a EventPolicyInformer.
+	EventPolicies() EventPolicyInformer
 	// OpenPolicies returns a OpenPolicyInformer.
 	OpenPolicies() OpenPolicyInformer
 	// PolicyBindings returns a PolicyBindingInformer.
@@ -39,6 +41,11 @@ type version struct {
 // New returns a new Interface.
 func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakListOptions internalinterfaces.TweakListOptionsFunc) Interface {
 	return &version{factory: f, namespace: namespace, tweakListOptions: tweakListOptions}
+}
+
+// EventPolicies returns a EventPolicyInformer.
+func (v *version) EventPolicies() EventPolicyInformer {
+	return &eventPolicyInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // OpenPolicies returns a OpenPolicyInformer.

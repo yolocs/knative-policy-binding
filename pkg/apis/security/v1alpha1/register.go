@@ -49,6 +49,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&OpenPolicyList{},
 		&PolicyBinding{},
 		&PolicyBindingList{},
+		&EventPolicy{},
+		&EventPolicyList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil

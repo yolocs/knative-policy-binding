@@ -1,0 +1,15 @@
+apiVersion: security.knative.dev/v1alpha1
+kind: EventPolicy
+metadata:
+  name: example-ce-policy
+  namespace: policy-example
+spec:
+  rules:
+  - - name: type
+      prefixMatch: cloud-
+    - name: source
+      prefixMatch: google-
+  - - name: type
+      prefixMatch: cloud-
+    - name: source
+      containsMatch: -amazon-

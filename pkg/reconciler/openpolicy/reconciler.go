@@ -87,7 +87,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, key string) error {
 	// updates regardless of whether the reconcile error out.
 	reconcileErr := r.reconcile(ctx, policy)
 	if reconcileErr != nil {
-		logging.FromContext(ctx).Warn("Error reconciling Broker", zap.Error(reconcileErr))
+		logging.FromContext(ctx).Warn("Error reconciling OpenPolicy", zap.Error(reconcileErr))
 		r.Recorder.Eventf(policy, corev1.EventTypeWarning, policyReconcileError, fmt.Sprintf("OpenPolicy reconcile error: %v", reconcileErr))
 	} else {
 		logging.FromContext(ctx).Debug("OpenPolicy reconciled")

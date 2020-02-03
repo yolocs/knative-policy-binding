@@ -18,6 +18,14 @@ limitations under the License.
 
 package v1alpha1
 
+// EventPolicyListerExpansion allows custom methods to be added to
+// EventPolicyLister.
+type EventPolicyListerExpansion interface{}
+
+// EventPolicyNamespaceListerExpansion allows custom methods to be added to
+// EventPolicyNamespaceLister.
+type EventPolicyNamespaceListerExpansion interface{}
+
 // OpenPolicyListerExpansion allows custom methods to be added to
 // OpenPolicyLister.
 type OpenPolicyListerExpansion interface{}

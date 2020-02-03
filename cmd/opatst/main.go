@@ -13,10 +13,15 @@ var str string = `package security.knative.dev
 
 default allow = false
 
-allow = {
-	startswith(input.request.header["Version"][_], "Test-")
+allow {
+  input.httpRequest.header["Ce-Specversion"][_] == "1.0"
+  contains(input.httpRequest.header["Ce-Id"][_], "cshou")
+  endswith(input.httpRequest.header["Ce-Custom"][_], "haha")
+  input.httpRequest.header["Ce-Type"][_] == "cloud-storage"
 }
 `
+
+// startswith(input.httpRequest.header["Ce-Source"][_], "Google")
 
 type Input struct {
 	Value string `json:"value,omitempty"`
