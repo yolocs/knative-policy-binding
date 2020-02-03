@@ -110,13 +110,13 @@ func NewConfigValidationController(ctx context.Context, cmw configmap.Watcher) *
 	)
 }
 
-func NewSinkBindingWebhook(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
+func NewPolicyBindingWebhook(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
 	policyresolver := policybinding.WithContextFactory(ctx, func(types.NamespacedName) {})
 
 	return psbinding.NewAdmissionController(ctx,
 
 		// Name of the resource webhook.
-		"policybindings.webhook.sources.knative.dev",
+		"policybindings.webhook.security.knative.dev",
 
 		// The path on which to serve the webhook.
 		"/policybindings",
@@ -141,5 +141,6 @@ func main() {
 		NewDefaultingAdmissionController,
 		NewValidationAdmissionController,
 		NewConfigValidationController,
+		NewPolicyBindingWebhook,
 	)
 }

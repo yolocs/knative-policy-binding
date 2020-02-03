@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: curl
+  name: curl-2
   labels:
     app: curl
 spec:
