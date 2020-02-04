@@ -120,11 +120,12 @@ func (r *Reconciler) reconcile(ctx context.Context, p *security.OpenPolicy) erro
 		p.Status.MarkConfigMapFailed("ConfigMapFailure", "%v", err)
 		return err
 	}
-
 	p.Status.MarkConfigMapReady(p.Name)
+
 	p.Status.SetDeciderURI(MakeDeciderURL())
 	p.Status.SetAgentSpec(MakeAgentSpec(r.agentImage, p.Name, p.ObjectMeta.Labels["agenttest"]))
 	p.Status.MarkReady()
+
 	return nil
 }
 

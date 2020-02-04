@@ -26,6 +26,7 @@ import (
 
 type SecurityV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	AuthorizableBindingsGetter
 	EventPoliciesGetter
 	OpenPoliciesGetter
 	PolicyBindingsGetter
@@ -34,6 +35,10 @@ type SecurityV1alpha1Interface interface {
 // SecurityV1alpha1Client is used to interact with features provided by the security.knative.dev group.
 type SecurityV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *SecurityV1alpha1Client) AuthorizableBindings(namespace string) AuthorizableBindingInterface {
+	return newAuthorizableBindings(c, namespace)
 }
 
 func (c *SecurityV1alpha1Client) EventPolicies(namespace string) EventPolicyInterface {

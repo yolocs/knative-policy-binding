@@ -1,0 +1,16 @@
+apiVersion: security.knative.dev/v1alpha1
+kind: AuthorizableBinding
+metadata:
+  name: curl-svc-binding
+  namespace: policy-example
+spec:
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: curl-2
+    namespace: policy-example
+  policy:
+    apiVersion: security.knative.dev/v1alpha1
+    kind: OpenPolicy
+    namespace: policy-example
+    name: http-policy

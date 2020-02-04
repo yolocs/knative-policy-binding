@@ -51,6 +51,16 @@ func (pb *PolicyBinding) GetBindingStatus() duck.BindableStatus {
 	return &pb.Status
 }
 
+// IsReady returns true if the resource is ready overall.
+func (pbs *PolicyBindingStatus) IsReady() bool {
+	return policyBindingCondSet.Manage(pbs).IsHappy()
+}
+
+// GetTopLevelCondition returns the top level Condition.
+func (pbs *PolicyBindingStatus) GetTopLevelCondition() *apis.Condition {
+	return policyBindingCondSet.Manage(pbs).GetTopLevelCondition()
+}
+
 // SetObservedGeneration implements psbinding.BindableStatus
 func (pbs *PolicyBindingStatus) SetObservedGeneration(gen int64) {
 	pbs.ObservedGeneration = gen

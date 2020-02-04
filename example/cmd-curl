@@ -1,0 +1,29 @@
+k apply -f ./example/curl.yaml # Show annotation of authorizable
+k apply -f ./example/ce-policy.yaml # Show the underlying OPA and config map
+k apply -f ./example/authbinding.yaml # Show the pod update
+
+kubectl exec curl-687866545f-mzwvn -it -c curl -- /bin/sh
+
+curl -v "http://localhost:8090" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"httpRequest":{"header":{"Ce-Specversion":["1.0"],"Ce-Type":["cloud-storage"],"Ce-Source":["google-cloud"]}}}'
+
+curl -v "http://localhost:8090" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"httpRequest":{"header":{"Ce-Specversion":["1.0"],"Ce-Type":["cloud-storage"],"Ce-Source":["aws-amazon-cloud"]}}}'
+
+curl -v "http://localhost:8090" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"httpRequest":{"header":{"Ce-Specversion":["1.0"],"Ce-Type":["bad-guy"],"Ce-Source":["aws-amazon-cloud"]}}}'
+
+# Update the event policy and retry
+
+k apply -f ./example/http-policy.yaml # open policy
+k apply -f ./example/curl-2.yaml # Demo self
+k apply -f ./example/authbinding-2.yaml
+
+k delete -f ./example/authbinding.yaml # Show sidecar was removed
+k delete -f ./example/authbinding-2.yaml

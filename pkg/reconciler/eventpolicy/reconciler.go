@@ -124,7 +124,6 @@ func (r *Reconciler) reconcile(ctx context.Context, p *security.EventPolicy) err
 }
 
 func (r *Reconciler) reconcileOpenPolicy(ctx context.Context, p *security.EventPolicy) (*security.OpenPolicy, error) {
-	// To fill.
 	rule := MakeOpenPolicyRule(p.Spec.Rules)
 	desired := &security.OpenPolicy{
 		ObjectMeta: metav1.ObjectMeta{

@@ -18,6 +18,14 @@ limitations under the License.
 
 package v1alpha1
 
+// AuthorizableBindingListerExpansion allows custom methods to be added to
+// AuthorizableBindingLister.
+type AuthorizableBindingListerExpansion interface{}
+
+// AuthorizableBindingNamespaceListerExpansion allows custom methods to be added to
+// AuthorizableBindingNamespaceLister.
+type AuthorizableBindingNamespaceListerExpansion interface{}
+
 // EventPolicyListerExpansion allows custom methods to be added to
 // EventPolicyLister.
 type EventPolicyListerExpansion interface{}

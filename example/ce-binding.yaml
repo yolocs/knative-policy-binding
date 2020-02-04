@@ -1,0 +1,18 @@
+apiVersion: security.knative.dev/v1alpha1
+kind: PolicyBinding
+metadata:
+  name: curl-ce-policy-binding
+  namespace: policy-example
+spec:
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    namespace: policy-example
+    selector:
+      matchLabels:
+        app: curl
+  policy:
+    apiVersion: security.knative.dev/v1alpha1
+    kind: EventPolicy
+    namespace: policy-example
+    name: example-ce-policy

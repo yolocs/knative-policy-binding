@@ -18,3 +18,18 @@ spec:
       - name: curl
         image: governmentpaas/curl-ssl
         command: ["/bin/sleep", "3650d"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: curl-svc
+  annotations:
+    security.knative.dev/authorizableOn: |
+      {"apiVersion":"apps/v1","kind":"Deployment","name":"curl"}
+spec:
+  selector:
+    app: curl
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
