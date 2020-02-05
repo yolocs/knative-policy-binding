@@ -67,16 +67,15 @@ func (pb *PolicyBinding) Undo(ctx context.Context, ps *duckv1.WithPod) duck.JSON
 	}
 
 	envs := []string{"K_POLICY_DECIDER", "K_POLICY_CHECK_PAYLOAD"}
-	patch := removeEnvs(ps, envs)
 
 	// This has problem when previously there is agent spec and then removed.
 	if policy.Status.AgentSpec == nil {
-		return patch
+		return removeEnvs(ps, envs)
 	}
 
-	patch = append(patch, removeVolumes(ps, policy.Status.AgentSpec.Volumes)...)
+	patch := removeVolumes(ps, policy.Status.AgentSpec.Volumes)
 	patch = append(patch, removeContainer(ps, policy.Status.AgentSpec.Container.Name)...)
-	return patch
+	return append(patch, removeEnvs(ps, envs)...)
 }
 
 func removeContainer(ps *duckv1.WithPod, containerName string) (patch duck.JSONPatch) {
@@ -114,19 +113,26 @@ func removeVolumes(ps *duckv1.WithPod, vols []corev1.Volume) (patch duck.JSONPat
 
 func removeEnvs(ps *duckv1.WithPod, envNames []string) (patch duck.JSONPatch) {
 	spec := ps.Spec.Template.Spec
+	changedIndex := []int{}
 	for _, en := range envNames {
 		for i, c := range spec.Containers {
+			startLen := len(spec.Containers[i].Env)
 			for j, ev := range c.Env {
 				if ev.Name == en {
 					spec.Containers[i].Env = append(spec.Containers[i].Env[:j], spec.Containers[i].Env[j+1:]...)
 				}
 			}
-			patch = append(patch, jsonpatch.JsonPatchOperation{
-				Operation: "replace",
-				Path:      fmt.Sprintf("/spec/template/spec/containers/%v/env", i),
-				Value:     spec.Containers[i].Env,
-			})
+			if startLen != len(spec.Containers[i].Env) {
+				changedIndex = append(changedIndex, i)
+			}
 		}
+	}
+	for _, i := range changedIndex {
+		patch = append(patch, jsonpatch.JsonPatchOperation{
+			Operation: "replace",
+			Path:      fmt.Sprintf("/spec/template/spec/containers/%v/env", i),
+			Value:     spec.Containers[i].Env,
+		})
 	}
 	ps.Spec.Template.Spec = spec
 	return patch
