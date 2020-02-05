@@ -1,6 +1,11 @@
 package main
 
-import "log"
+import (
+	"log"
+	"os"
+
+	"knative.dev/pkg/apis/duck"
+)
 
 // func main() {
 // 	p := &duckv1.WithPod{
@@ -90,23 +95,21 @@ import "log"
 // }
 
 func main() {
-	str := []string{"1", "2", "3", "4", "5"}
-	del := []string{"3", "4", "5"}
-
-	for i, s := range str {
-		if toDelete(s, del) {
-			str = append(str[:i], str[i+1:]...)
-		}
+	m1 := map[string]interface{}{
+		"security.knative.dev/policyGen": "1",
+		"other":                          "xxx",
+		"map":                            map[string]string{"foo": "bar"},
 	}
 
-	log.Println(str)
-}
-
-func toDelete(target string, envs []string) bool {
-	for _, v := range envs {
-		if v == target {
-			return true
-		}
+	m2 := map[string]interface{}{
+		"other": "xxx",
 	}
-	return false
+
+	patchBytes, err := duck.CreateBytePatch(m2, m1)
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+
+	log.Println(string(patchBytes))
 }

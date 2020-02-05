@@ -19,6 +19,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/mattbaird/jsonpatch"
 	corev1 "k8s.io/api/core/v1"
@@ -48,6 +49,7 @@ func (pb *PolicyBinding) Do(ctx context.Context, ps *duckv1.WithPod) duck.JSONPa
 		},
 	}
 	patch = append(patch, addEnvs(ps, envs)...)
+	patch = append(patch, addAnnotation(ps, "security.knative.dev/policyGeneration", fmt.Sprintf("%d", policy.Generation))...)
 
 	if policy.Status.AgentSpec == nil {
 		return patch
@@ -66,16 +68,52 @@ func (pb *PolicyBinding) Undo(ctx context.Context, ps *duckv1.WithPod) duck.JSON
 		return nil
 	}
 
+	var patch duck.JSONPatch
+	if ps.Spec.Template.Annotations != nil {
+		if _, ok := ps.Spec.Template.Annotations["security.knative.dev/policyGeneration"]; ok {
+			patch = append(patch, removeAnnotation(ps, "security.knative.dev/policyGeneration")...)
+		}
+	}
+
 	envs := []string{"K_POLICY_DECIDER", "K_POLICY_CHECK_PAYLOAD"}
 
 	// This has problem when previously there is agent spec and then removed.
 	if policy.Status.AgentSpec == nil {
-		return removeEnvs(ps, envs)
+		return append(patch, removeEnvs(ps, envs)...)
 	}
 
-	patch := removeVolumes(ps, policy.Status.AgentSpec.Volumes)
+	patch = append(patch, removeVolumes(ps, policy.Status.AgentSpec.Volumes)...)
 	patch = append(patch, removeContainer(ps, policy.Status.AgentSpec.Container.Name)...)
 	return append(patch, removeEnvs(ps, envs)...)
+}
+
+func removeAnnotation(ps *duckv1.WithPod, key string) (patch duck.JSONPatch) {
+	delete(ps.Spec.Template.Annotations, key)
+	patch = append(patch, jsonpatch.JsonPatchOperation{
+		Operation: "remove",
+		Path:      "/spec/template/metadata/annotations/" + strings.ReplaceAll(key, "/", "~1"),
+	})
+	return patch
+}
+
+func addAnnotation(ps *duckv1.WithPod, key, value string) (patch duck.JSONPatch) {
+	if ps.Spec.Template.Annotations == nil {
+		ps.Spec.Template.Annotations = map[string]string{key: value}
+		patch = append(patch, jsonpatch.JsonPatchOperation{
+			Operation: "add",
+			Path:      "/spec/template/metadata/annotations",
+			Value:     ps.Spec.Template.Annotations,
+		})
+		return patch
+	}
+
+	ps.Spec.Template.Annotations[key] = value
+	patch = append(patch, jsonpatch.JsonPatchOperation{
+		Operation: "add",
+		Path:      "/spec/template/metadata/annotations/" + strings.ReplaceAll(key, "/", "~1"),
+		Value:     value,
+	})
+	return patch
 }
 
 func removeContainer(ps *duckv1.WithPod, containerName string) (patch duck.JSONPatch) {

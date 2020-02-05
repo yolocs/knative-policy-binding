@@ -5,7 +5,8 @@ metadata:
   namespace: policy-example
 spec:
   subject:
-    # Annotate the broker {"apiVersion":"apps/v1","kind":"Deployment","name":"default-broker-ingress","namespace":"policy-example"}
+    # For k8s svc {"apiVersion":"apps/v1","kind":"Deployment","name":"default-broker-ingress","namespace":"policy-example"}
+    # For ksvc {"apiVersion":"apps/v1","kind":"Deployment","namespace":"policy-example","selector":{"matchLabels":{"eventing.knative.dev/broker":"default","eventing.knative.dev/brokerRole":"ingress","serving.knative.dev/service":"default-broker"}}}
     apiVersion: eventing.knative.dev/v1alpha1
     kind: Broker
     name: default
