@@ -48,7 +48,7 @@ func (c *cachedQuery) start(ctx context.Context) error {
 	go func() {
 		for {
 			select {
-			case <-time.After(15 * time.Second):
+			case <-time.After(5 * time.Second):
 				if err := c.load(ctx); err != nil {
 					logging.FromContext(ctx).Errorf("%v", err)
 				} else {
