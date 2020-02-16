@@ -28,6 +28,7 @@ type SecurityV1alpha2Interface interface {
 	RESTClient() rest.Interface
 	HTTPPoliciesGetter
 	HTTPPolicyBindingsGetter
+	PolicyPodspecableBindingsGetter
 }
 
 // SecurityV1alpha2Client is used to interact with features provided by the security.knative.dev group.
@@ -41,6 +42,10 @@ func (c *SecurityV1alpha2Client) HTTPPolicies(namespace string) HTTPPolicyInterf
 
 func (c *SecurityV1alpha2Client) HTTPPolicyBindings(namespace string) HTTPPolicyBindingInterface {
 	return newHTTPPolicyBindings(c, namespace)
+}
+
+func (c *SecurityV1alpha2Client) PolicyPodspecableBindings(namespace string) PolicyPodspecableBindingInterface {
+	return newPolicyPodspecableBindings(c, namespace)
 }
 
 // NewForConfig creates a new SecurityV1alpha2Client for the given config.

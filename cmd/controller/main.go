@@ -20,6 +20,7 @@ import (
 	// The set of controllers this controller process runs.
 
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler/istiobinding"
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policypsbinding"
 
 	// This defines the shared main for injected controllers.
 	"knative.dev/pkg/injection/sharedmain"
@@ -28,5 +29,6 @@ import (
 func main() {
 	sharedmain.Main("controller",
 		istiobinding.NewController,
+		policypsbinding.NewController,
 	)
 }

@@ -1,0 +1,14 @@
+apiVersion: security.knative.dev/v1alpha2
+kind: PolicyPodspecableBinding
+metadata:
+  name: raw-binding-test
+  namespace: istio-example
+spec:
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    namespace: istio-example
+    selector:
+      matchLabels:
+        app: curl
+  deciderURI: http://localhost:8000

@@ -28,6 +28,8 @@ type Interface interface {
 	HTTPPolicies() HTTPPolicyInformer
 	// HTTPPolicyBindings returns a HTTPPolicyBindingInformer.
 	HTTPPolicyBindings() HTTPPolicyBindingInformer
+	// PolicyPodspecableBindings returns a PolicyPodspecableBindingInformer.
+	PolicyPodspecableBindings() PolicyPodspecableBindingInformer
 }
 
 type version struct {
@@ -49,4 +51,9 @@ func (v *version) HTTPPolicies() HTTPPolicyInformer {
 // HTTPPolicyBindings returns a HTTPPolicyBindingInformer.
 func (v *version) HTTPPolicyBindings() HTTPPolicyBindingInformer {
 	return &hTTPPolicyBindingInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// PolicyPodspecableBindings returns a PolicyPodspecableBindingInformer.
+func (v *version) PolicyPodspecableBindings() PolicyPodspecableBindingInformer {
+	return &policyPodspecableBindingInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

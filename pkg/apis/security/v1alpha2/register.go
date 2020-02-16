@@ -47,8 +47,10 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&HTTPPolicy{},
 		&HTTPPolicyBinding{},
+		&PolicyPodspecableBinding{},
 		&HTTPPolicyList{},
 		&HTTPPolicyBindingList{},
+		&PolicyPodspecableBindingList{},
 	)
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
 	return nil

@@ -33,3 +33,11 @@ type HTTPPolicyBindingListerExpansion interface{}
 // HTTPPolicyBindingNamespaceListerExpansion allows custom methods to be added to
 // HTTPPolicyBindingNamespaceLister.
 type HTTPPolicyBindingNamespaceListerExpansion interface{}
+
+// PolicyPodspecableBindingListerExpansion allows custom methods to be added to
+// PolicyPodspecableBindingLister.
+type PolicyPodspecableBindingListerExpansion interface{}
+
+// PolicyPodspecableBindingNamespaceListerExpansion allows custom methods to be added to
+// PolicyPodspecableBindingNamespaceLister.
+type PolicyPodspecableBindingNamespaceListerExpansion interface{}

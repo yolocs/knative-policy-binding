@@ -36,6 +36,10 @@ func (c *FakeSecurityV1alpha2) HTTPPolicyBindings(namespace string) v1alpha2.HTT
 	return &FakeHTTPPolicyBindings{c, namespace}
 }
 
+func (c *FakeSecurityV1alpha2) PolicyPodspecableBindings(namespace string) v1alpha2.PolicyPodspecableBindingInterface {
+	return &FakePolicyPodspecableBindings{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSecurityV1alpha2) RESTClient() rest.Interface {

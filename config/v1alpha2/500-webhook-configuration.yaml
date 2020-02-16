@@ -72,20 +72,20 @@ metadata:
   labels:
     security.knative.dev/release: devel
 # The data is populated at install time.
-# ---
-# apiVersion: admissionregistration.k8s.io/v1beta1
-# kind: MutatingWebhookConfiguration
-# metadata:
-#   name: policybindings.webhook.security.knative.dev
-#   labels:
-#     security.knative.dev/release: devel
-# webhooks:
-# - admissionReviewVersions:
-#   - v1beta1
-#   clientConfig:
-#     service:
-#       name: webhook
-#       namespace: knative-security
-#   failurePolicy: Fail
-#   sideEffects: None
-#   name: policybindings.webhook.security.knative.dev
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: policypodspecablebindings.webhook.security.knative.dev
+  labels:
+    security.knative.dev/release: devel
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    service:
+      name: webhook
+      namespace: knative-security
+  failurePolicy: Fail
+  sideEffects: None
+  name: policypodspecablebindings.webhook.security.knative.dev

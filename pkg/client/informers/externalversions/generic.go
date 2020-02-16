@@ -68,6 +68,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha2().HTTPPolicies().Informer()}, nil
 	case v1alpha2.SchemeGroupVersion.WithResource("httppolicybindings"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha2().HTTPPolicyBindings().Informer()}, nil
+	case v1alpha2.SchemeGroupVersion.WithResource("policypodspecablebindings"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha2().PolicyPodspecableBindings().Informer()}, nil
 
 	}
 
