@@ -22,6 +22,8 @@ import (
 	clientset "github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned"
 	securityv1alpha1 "github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned/typed/security/v1alpha1"
 	fakesecurityv1alpha1 "github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned/typed/security/v1alpha1/fake"
+	securityv1alpha2 "github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned/typed/security/v1alpha2"
+	fakesecurityv1alpha2 "github.com/yolocs/knative-policy-binding/pkg/client/clientset/versioned/typed/security/v1alpha2/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -79,4 +81,9 @@ var _ clientset.Interface = &Clientset{}
 // SecurityV1alpha1 retrieves the SecurityV1alpha1Client
 func (c *Clientset) SecurityV1alpha1() securityv1alpha1.SecurityV1alpha1Interface {
 	return &fakesecurityv1alpha1.FakeSecurityV1alpha1{Fake: &c.Fake}
+}
+
+// SecurityV1alpha2 retrieves the SecurityV1alpha2Client
+func (c *Clientset) SecurityV1alpha2() securityv1alpha2.SecurityV1alpha2Interface {
+	return &fakesecurityv1alpha2.FakeSecurityV1alpha2{Fake: &c.Fake}
 }

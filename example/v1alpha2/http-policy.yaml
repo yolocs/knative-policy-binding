@@ -1,0 +1,14 @@
+apiVersion: security.knative.dev/v1alpha2
+kind: HTTPPolicy
+metadata:
+  namespace: istio-example
+  name: sample-policy
+spec:
+  rules:
+  - headers:
+    - key: Test-Version
+      values: ["hello-*", "bye-*"]
+    - key: Test-Foo
+      values: ["Bar"]
+    operations:
+    - methods: ["POST"]

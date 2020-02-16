@@ -20,7 +20,6 @@ import (
 	"context"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/apimachinery/pkg/types"
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/injection/sharedmain"
@@ -34,15 +33,13 @@ import (
 	"knative.dev/pkg/webhook/resourcesemantics/defaulting"
 	"knative.dev/pkg/webhook/resourcesemantics/validation"
 
-	securityv1alpha1 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha1"
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
-	"github.com/yolocs/knative-policy-binding/pkg/webhook/psbinding"
+	securityv1alpha2 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha2"
 )
 
 var securityTypes = map[schema.GroupVersionKind]resourcesemantics.GenericCRD{
 	// List the types to validate.
-	securityv1alpha1.SchemeGroupVersion.WithKind("OpenPolicy"):    &securityv1alpha1.OpenPolicy{},
-	securityv1alpha1.SchemeGroupVersion.WithKind("PolicyBinding"): &securityv1alpha1.PolicyBinding{},
+	securityv1alpha2.SchemeGroupVersion.WithKind("HTTPPolicy"):        &securityv1alpha2.HTTPPolicy{},
+	securityv1alpha2.SchemeGroupVersion.WithKind("HTTPPolicyBinding"): &securityv1alpha2.HTTPPolicyBinding{},
 }
 
 func NewDefaultingAdmissionController(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
@@ -110,24 +107,24 @@ func NewConfigValidationController(ctx context.Context, cmw configmap.Watcher) *
 	)
 }
 
-func NewPolicyBindingWebhook(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
-	policyresolver := policybinding.WithContextFactory(ctx, func(types.NamespacedName) {})
+// func NewPolicyBindingWebhook(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
+// 	policyresolver := policybinding.WithContextFactory(ctx, func(types.NamespacedName) {})
 
-	return psbinding.NewAdmissionController(ctx,
+// 	return psbinding.NewAdmissionController(ctx,
 
-		// Name of the resource webhook.
-		"policybindings.webhook.security.knative.dev",
+// 		// Name of the resource webhook.
+// 		"policybindings.webhook.security.knative.dev",
 
-		// The path on which to serve the webhook.
-		"/policybindings",
+// 		// The path on which to serve the webhook.
+// 		"/policybindings",
 
-		// How to get all the Bindables for configuring the mutating webhook.
-		policybinding.ListAll,
+// 		// How to get all the Bindables for configuring the mutating webhook.
+// 		policybinding.ListAll,
 
-		// How to setup the context prior to invoking Do/Undo.
-		policyresolver,
-	)
-}
+// 		// How to setup the context prior to invoking Do/Undo.
+// 		policyresolver,
+// 	)
+// }
 
 func main() {
 	ctx := webhook.WithOptions(signals.NewContext(), webhook.Options{
@@ -141,6 +138,6 @@ func main() {
 		NewDefaultingAdmissionController,
 		NewValidationAdmissionController,
 		NewConfigValidationController,
-		NewPolicyBindingWebhook,
+		// NewPolicyBindingWebhook,
 	)
 }

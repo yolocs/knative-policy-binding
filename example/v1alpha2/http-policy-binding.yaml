@@ -1,0 +1,18 @@
+apiVersion: security.knative.dev/v1alpha2
+kind: HTTPPolicyBinding
+metadata:
+  name: echo-svc-binding
+  namespace: istio-example
+  annotations:
+    security.knative.dev/binding.class: istio
+spec:
+  subject:
+    apiVersion: v1
+    kind: Service
+    name: echo-svc
+    namespace: istio-example
+  policy:
+    apiVersion: security.knative.dev/v1alpha2
+    kind: HTTPPolicy
+    namespace: istio-example
+    name: sample-policy

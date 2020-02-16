@@ -22,6 +22,7 @@ import (
 	"fmt"
 
 	v1alpha1 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha1"
+	v1alpha2 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha2"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
 )
@@ -61,6 +62,12 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha1().OpenPolicies().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("policybindings"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha1().PolicyBindings().Informer()}, nil
+
+		// Group=security.knative.dev, Version=v1alpha2
+	case v1alpha2.SchemeGroupVersion.WithResource("httppolicies"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha2().HTTPPolicies().Informer()}, nil
+	case v1alpha2.SchemeGroupVersion.WithResource("httppolicybindings"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Security().V1alpha2().HTTPPolicyBindings().Informer()}, nil
 
 	}
 

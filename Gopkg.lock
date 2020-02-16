@@ -196,15 +196,18 @@
   version = "v0.2.3"
 
 [[projects]]
-  digest = "1:abea725bcf0210887f5da19d804fffa1dd45a42a56bdf5f02322345e3fee4f0d"
+  digest = "1:85494ed429202dcb0484f6cfb9b4eeb0cdc6f2214c50afc6985fbc7f03a564fa"
   name = "github.com/gogo/protobuf"
   packages = [
+    "jsonpb",
     "proto",
+    "protoc-gen-gogo/descriptor",
     "sortkeys",
+    "types",
   ]
   pruneopts = "NUT"
-  revision = "4cbf7e384e768b4e01799441fdf2a706a5635ae7"
-  version = "v1.2.0"
+  revision = "5628607bb4c51c3157aacc3a50f0ab707582b805"
+  version = "v1.3.1"
 
 [[projects]]
   branch = "master"
@@ -366,14 +369,6 @@
   pruneopts = "NUT"
   revision = "24b83195037b3bc61fcda2d28b7b0518bce293b6"
   version = "v1.0.4"
-
-[[projects]]
-  branch = "master"
-  digest = "1:0e9bfc47ab9941ecc3344e580baca5deb4091177e84dd9773b48b38ec26b93d5"
-  name = "github.com/mattbaird/jsonpatch"
-  packages = ["."]
-  pruneopts = "NUT"
-  revision = "81af80346b1a01caae0cbc27fd3c1ba5b11e189f"
 
 [[projects]]
   digest = "1:5985ef4caf91ece5d54817c11ea25f182697534f8ae6521eadcd628c142ac4b6"
@@ -826,6 +821,33 @@
   version = "v2.2.2"
 
 [[projects]]
+  digest = "1:c5fb41b683f6793a724bdf332ff2b9acb98e2a1904ea5af92c9b9b049546132c"
+  name = "istio.io/api"
+  packages = [
+    "security/v1beta1",
+    "type/v1beta1",
+  ]
+  pruneopts = "NUT"
+  revision = "ed4b507c54e129239375e3521f233aaa397d23b7"
+  version = "1.4.4"
+
+[[projects]]
+  digest = "1:8a8260522ba54e90c28b9bf702481870c54ab7f60300285beb8bcc79bd5858ba"
+  name = "istio.io/client-go"
+  packages = ["pkg/apis/security/v1beta1"]
+  pruneopts = "NUT"
+  revision = "9053b0f86b0359b7e66293eb6098cc551aec6f69"
+  version = "1.4.4"
+
+[[projects]]
+  digest = "1:9c9f11af1b1f2ae03d897ba5de27103ec1c9c43605663ccdef67831d6a462a30"
+  name = "istio.io/gogo-genproto"
+  packages = ["googleapis/google/api"]
+  pruneopts = "NUT"
+  revision = "f7d19ec0141d49ac9efc83b5e61fa81ba103b445"
+  version = "1.4.4"
+
+[[projects]]
   digest = "1:d77b48cc0ea74f3edbc8e0515a0ce2fa2154eb414137dd4fb5a642a73296d403"
   name = "k8s.io/api"
   packages = [
@@ -1215,6 +1237,7 @@
     "network",
     "profiling",
     "ptr",
+    "reconciler",
     "signals",
     "system",
     "tracker",
@@ -1258,13 +1281,15 @@
     "github.com/cloudflare/cfssl/log",
     "github.com/kelseyhightower/envconfig",
     "github.com/markbates/inflect",
-    "github.com/mattbaird/jsonpatch",
     "github.com/open-policy-agent/opa/ast",
     "github.com/open-policy-agent/opa/rego",
     "github.com/pkg/errors",
     "go.uber.org/zap",
     "golang.org/x/sync/errgroup",
     "gomodules.xyz/jsonpatch/v2",
+    "istio.io/api/security/v1beta1",
+    "istio.io/api/type/v1beta1",
+    "istio.io/client-go/pkg/apis/security/v1beta1",
     "k8s.io/api/admission/v1beta1",
     "k8s.io/api/admissionregistration/v1beta1",
     "k8s.io/api/core/v1",
@@ -1321,6 +1346,7 @@
     "knative.dev/pkg/metrics",
     "knative.dev/pkg/network",
     "knative.dev/pkg/ptr",
+    "knative.dev/pkg/reconciler",
     "knative.dev/pkg/signals",
     "knative.dev/pkg/system",
     "knative.dev/pkg/tracker",

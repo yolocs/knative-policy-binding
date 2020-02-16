@@ -18,10 +18,8 @@ package main
 
 import (
 	// The set of controllers this controller process runs.
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/authbinding"
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/eventpolicy"
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/openpolicy"
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
+
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/istiobinding"
 
 	// This defines the shared main for injected controllers.
 	"knative.dev/pkg/injection/sharedmain"
@@ -29,9 +27,6 @@ import (
 
 func main() {
 	sharedmain.Main("controller",
-		openpolicy.NewController,
-		eventpolicy.NewController,
-		policybinding.NewController,
-		authbinding.NewController,
+		istiobinding.NewController,
 	)
 }

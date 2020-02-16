@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mattbaird/jsonpatch"
+	jsonpatch "gomodules.xyz/jsonpatch/v2"
 	corev1 "k8s.io/api/core/v1"
 	"knative.dev/pkg/apis/duck"
 	duckv1 "knative.dev/pkg/apis/duck/v1"
@@ -89,7 +89,7 @@ func (pb *PolicyBinding) Undo(ctx context.Context, ps *duckv1.WithPod) duck.JSON
 
 func removeAnnotation(ps *duckv1.WithPod, key string) (patch duck.JSONPatch) {
 	delete(ps.Spec.Template.Annotations, key)
-	patch = append(patch, jsonpatch.JsonPatchOperation{
+	patch = append(patch, jsonpatch.Operation{
 		Operation: "remove",
 		Path:      "/spec/template/metadata/annotations/" + strings.ReplaceAll(key, "/", "~1"),
 	})
@@ -99,7 +99,7 @@ func removeAnnotation(ps *duckv1.WithPod, key string) (patch duck.JSONPatch) {
 func addAnnotation(ps *duckv1.WithPod, key, value string) (patch duck.JSONPatch) {
 	if ps.Spec.Template.Annotations == nil {
 		ps.Spec.Template.Annotations = map[string]string{key: value}
-		patch = append(patch, jsonpatch.JsonPatchOperation{
+		patch = append(patch, jsonpatch.Operation{
 			Operation: "add",
 			Path:      "/spec/template/metadata/annotations",
 			Value:     ps.Spec.Template.Annotations,
@@ -108,7 +108,7 @@ func addAnnotation(ps *duckv1.WithPod, key, value string) (patch duck.JSONPatch)
 	}
 
 	ps.Spec.Template.Annotations[key] = value
-	patch = append(patch, jsonpatch.JsonPatchOperation{
+	patch = append(patch, jsonpatch.Operation{
 		Operation: "add",
 		Path:      "/spec/template/metadata/annotations/" + strings.ReplaceAll(key, "/", "~1"),
 		Value:     value,
@@ -120,7 +120,7 @@ func removeContainer(ps *duckv1.WithPod, containerName string) (patch duck.JSONP
 	spec := ps.Spec.Template.Spec
 	for i, c := range spec.Containers {
 		if c.Name == containerName {
-			patch = append(patch, jsonpatch.JsonPatchOperation{
+			patch = append(patch, jsonpatch.Operation{
 				Operation: "remove",
 				Path:      fmt.Sprintf("%v/%v", "/spec/template/spec/containers", i),
 			})
@@ -138,7 +138,7 @@ func removeVolumes(ps *duckv1.WithPod, vols []corev1.Volume) (patch duck.JSONPat
 		for i, v := range spec.Volumes {
 			if v.Name == vn.Name {
 				spec.Volumes = append(spec.Volumes[:i], spec.Volumes[i+1:]...)
-				patch = append(patch, jsonpatch.JsonPatchOperation{
+				patch = append(patch, jsonpatch.Operation{
 					Operation: "remove",
 					Path:      fmt.Sprintf("/spec/template/spec/volumes/%d", i),
 				})
@@ -166,7 +166,7 @@ func removeEnvs(ps *duckv1.WithPod, envNames []string) (patch duck.JSONPatch) {
 		}
 	}
 	for _, i := range changedIndex {
-		patch = append(patch, jsonpatch.JsonPatchOperation{
+		patch = append(patch, jsonpatch.Operation{
 			Operation: "replace",
 			Path:      fmt.Sprintf("/spec/template/spec/containers/%v/env", i),
 			Value:     spec.Containers[i].Env,
@@ -185,7 +185,7 @@ func addContainer(ps *duckv1.WithPod, c corev1.Container) (patch duck.JSONPatch)
 	} else {
 		path += "/-"
 	}
-	patch = append(patch, jsonpatch.JsonPatchOperation{
+	patch = append(patch, jsonpatch.Operation{
 		Operation: "add",
 		Path:      path,
 		Value:     value,
@@ -206,7 +206,7 @@ func addVolumes(ps *duckv1.WithPod, vols []corev1.Volume) (patch duck.JSONPatch)
 		} else {
 			path += "/-"
 		}
-		patch = append(patch, jsonpatch.JsonPatchOperation{
+		patch = append(patch, jsonpatch.Operation{
 			Operation: "add",
 			Path:      path,
 			Value:     value,
@@ -219,7 +219,7 @@ func addVolumes(ps *duckv1.WithPod, vols []corev1.Volume) (patch duck.JSONPatch)
 func addEnvs(ps *duckv1.WithPod, envs []corev1.EnvVar) (patch duck.JSONPatch) {
 	for i, c := range ps.Spec.Template.Spec.Containers {
 		ps.Spec.Template.Spec.Containers[i].Env = append(c.Env, envs...)
-		patch = append(patch, jsonpatch.JsonPatchOperation{
+		patch = append(patch, jsonpatch.Operation{
 			Operation: "replace",
 			Path:      fmt.Sprintf("/spec/template/spec/containers/%v/env", i),
 			Value:     ps.Spec.Template.Spec.Containers[i].Env,
