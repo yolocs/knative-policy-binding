@@ -18,8 +18,7 @@ spec:
     spec:
       containers:
       - name: http-echo
-        image: hashicorp/http-echo
-        args: ["-text=\"hello world\""]
+        image: github.com/yolocs/knative-policy-binding/cmd/echo
         ports:
         - containerPort: 5678
           # name: http
