@@ -35,7 +35,6 @@ import (
 	"knative.dev/pkg/webhook/resourcesemantics/validation"
 
 	securityv1alpha2 "github.com/yolocs/knative-policy-binding/pkg/apis/security/v1alpha2"
-	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policybinding"
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler/policypsbinding"
 	"github.com/yolocs/knative-policy-binding/pkg/webhook/psbinding"
 )
@@ -113,15 +112,15 @@ func NewConfigValidationController(ctx context.Context, cmw configmap.Watcher) *
 }
 
 func NewPolicyBindingWebhook(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
-	withContext := policybinding.WithContextFactory(ctx, func(types.NamespacedName) {})
+	withContext := policypsbinding.WithContextFactory(ctx, func(types.NamespacedName) {})
 
 	return psbinding.NewAdmissionController(ctx,
 
 		// Name of the resource webhook.
-		"policybindings.webhook.security.knative.dev",
+		"policypodspecablebindings.webhook.security.knative.dev",
 
 		// The path on which to serve the webhook.
-		"/policybindings",
+		"/policypodspecablebindings",
 
 		// How to get all the Bindables for configuring the mutating webhook.
 		policypsbinding.ListAll,

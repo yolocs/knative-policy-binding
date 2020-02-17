@@ -34,6 +34,7 @@ import (
 	istiolisters "github.com/yolocs/knative-policy-binding/pkg/client/istio/listers/security/v1beta1"
 	securitylisters "github.com/yolocs/knative-policy-binding/pkg/client/listers/security/v1alpha2"
 	"github.com/yolocs/knative-policy-binding/pkg/reconciler"
+	"github.com/yolocs/knative-policy-binding/pkg/reconciler/internal/resolver"
 	istiosecurityv1beta1 "istio.io/api/security/v1beta1"
 	istiotypev1beta1 "istio.io/api/type/v1beta1"
 	istiov1beta1 "istio.io/client-go/pkg/apis/security/v1beta1"
@@ -55,7 +56,7 @@ type Reconciler struct {
 
 	istioClientSet istioclientset.Interface
 
-	subjectResolver *SubjectResolver
+	subjectResolver *resolver.SubjectResolver
 	policyTracker   tracker.Interface
 }
 
@@ -88,6 +89,7 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, b *v1alpha2.HTTPPolicyBi
 		b.Status.MarkBindingUnavailable("GetPolicyFailure", err.Error())
 		return fmt.Errorf("Failed to get the referencing policy: %w", err)
 	}
+	r.policyTracker.Track(*b.Spec.Policy, b)
 
 	if err := r.reconcileIstioAuthzPolicies(ctx, b, sub, p); err != nil {
 		logging.FromContext(ctx).Error("Problem reconciling Istio AuthorizationPolicy", zap.Error(err))

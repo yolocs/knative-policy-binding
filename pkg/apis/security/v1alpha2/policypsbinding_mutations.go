@@ -45,7 +45,7 @@ func (pb *PolicyPodspecableBinding) Do(ctx context.Context, ps *duckv1.WithPod) 
 		},
 	}
 	patch = append(patch, addEnvs(ps, envs)...)
-	// patch = append(patch, addAnnotation(ps, "security.knative.dev/policyGeneration", fmt.Sprintf("%d", policy.Generation))...)
+	patch = append(patch, addAnnotation(ps, "security.knative.dev/policyGeneration", binding.GetAnnotations()["security.knative.dev/policyGeneration"])...)
 
 	if binding.Spec.AgentSpec == nil {
 		return patch
@@ -65,11 +65,11 @@ func (pb *PolicyPodspecableBinding) Undo(ctx context.Context, ps *duckv1.WithPod
 	}
 
 	var patch duck.JSONPatch
-	// if ps.Spec.Template.Annotations != nil {
-	// 	if _, ok := ps.Spec.Template.Annotations["security.knative.dev/policyGeneration"]; ok {
-	// 		patch = append(patch, removeAnnotation(ps, "security.knative.dev/policyGeneration")...)
-	// 	}
-	// }
+	if ps.Spec.Template.Annotations != nil {
+		if _, ok := ps.Spec.Template.Annotations["security.knative.dev/policyGeneration"]; ok {
+			patch = append(patch, removeAnnotation(ps, "security.knative.dev/policyGeneration")...)
+		}
+	}
 
 	envs := []string{"K_POLICY_DECIDER"}
 

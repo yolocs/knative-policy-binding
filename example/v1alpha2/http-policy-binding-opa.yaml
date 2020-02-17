@@ -1,10 +1,10 @@
 apiVersion: security.knative.dev/v1alpha2
 kind: HTTPPolicyBinding
 metadata:
-  name: echo-svc-binding
+  name: echo-svc-binding-opa
   namespace: istio-example
   annotations:
-    security.knative.dev/binding.class: istio
+    security.knative.dev/binding.class: opa
 spec:
   subject:
     apiVersion: v1
